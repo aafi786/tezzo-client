@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button } from 'antd';
 import Chef from '../icons/chef.png';
-import { Table, Divider, Tag } from 'antd';
+import { Table, Divider, Spin, notification } from 'antd';
 import ManageWorkout from '../components/ManageWorkout';
 import ViewWorkout from '../components/ViewWorkout';
 import { Link } from 'react-router-dom';
@@ -28,16 +28,18 @@ export default class WorkoutPlan extends Component {
         this.fetchWorkout();
     }
     fetchWorkout = () => {
+        let lc = localStorage.getItem('xdGcsHneGi3r@ywThjref')
         this.setState({
             tableLoading: true
         })
+
         axios.post('http://localhost:5000/workout/all-workout', {
-            gym_id: 'monkey-fitness'
+            gym_id: lc
         })
             .then(res => {
                 console.log(res.data);
                 this.setState({
-                    dietArray: res.data,
+                    dietArray: res.data.msg,
                     tableLoading: false
                 })
             })
@@ -53,8 +55,56 @@ export default class WorkoutPlan extends Component {
             this.setState({
                 view: <ViewWorkout />
             })
+            console.log(e, id)
+            this.setState({
+                view: <Spin />
+            })
+            axios.post('http://localhost:5000/workout/getdietbyid', {
+                id: id
+            })
+                .then(res => {
+
+                    this.setState({
+
+                        view: <ViewWorkout workout={res.data.msg} />
+                    })
+                    console.log(res.data)
+                })
+                .catch(err => {
+                    console.log(err);
+                })
         }
 
+    }
+    deleteWorkout = (e) => {
+        this.setState({
+            tableLoading: true
+        })
+        axios.post('http://localhost:5000/workout/deletedietbyid', {
+            id: e
+        })
+            .then(res => {
+                if (res.data.success) {
+                    notification.success({
+                        message: "Workout plan deleted !"
+                    })
+                    this.fetchWorkout();
+
+                } else {
+                    notification.error({
+                        message: "Some error occured, Try Again"
+                    })
+                }
+                this.setState({
+                    tableLoading: false
+                })
+            })
+            .catch(err => {
+                console.log(err);
+                this.setState({
+                    tableLoading: false
+                })
+            })
     }
     render() {
         return (
@@ -65,30 +115,30 @@ export default class WorkoutPlan extends Component {
                 </div>
                 <div uk-grid="true">
 
-                    <div class="uk-width-1-3@m">
-                        <div class="uk-card uk-card-default uk-card-body">
+                    <div className="uk-width-1-3@m">
+                        <div className="uk-card uk-card-default uk-card-body">
 
                             <h3 className="set-heading">Create Workout Plan</h3>
                             <Button className="gen-btn mt-2" onClick={() => this.handleView(1, null)}>Add Diet</Button>
                             <Table loading={this.state.tableLoading} dataSource={this.state.dietArray}>
 
-                                <Column title="Diet Name" dataIndex="diet_name" key="diet_name" />
+                                <Column title="Workout Plan" dataIndex="plan_name" key="plan_name" />
 
                                 <Column
                                     title="Action"
                                     key="action"
-                                    render={(text, record) => (
+                                    render={(action) => (
                                         <span>
-
+                                            <Link to="#" onClick={() => this.handleView(2, action._id)}>View</Link>
                                             <Divider type="vertical" />
-                                            <Link to="#" onClick={() => this.handleView(2, 'id')}>View</Link>
+                                            <Link to="#" onClick={() => this.deleteWorkout(action._id)}>Delete</Link>
                                         </span>
                                     )}
                                 />
                             </Table>
                         </div>
                     </div>
-                    <div class="uk-width-expand@m">
+                    <div className="uk-width-expand@m">
                         {
                             this.state.view
                         }

@@ -57,20 +57,7 @@ export default class ManageWorkout extends Component {
     }
 
 
-    addDiet = () => {
-        let dietobj = {};
-        dietobj.id = uuidv4();
-        dietobj.workout_name = this.state.workout_name;
-        dietobj.workout_sets = this.state.sets;
-        dietobj.workout_reps = this.state.reps;
-        this.setState({
-            dietArray: [...this.state.dietArray, dietobj],
-            itemArray: []
-        }, () => {
-            console.log(this.state.dietArray);
-        })
 
-    }
     delDiet = (e) => {
         let ansArr = this.state.dietArray.filter((data, key) => {
             return e.id !== data.id
@@ -81,14 +68,16 @@ export default class ManageWorkout extends Component {
 
     }
     uploadWorkout = () => {
+        let lc = localStorage.getItem('xdGcsHneGi3r@ywThjref');
         console.log('CLickedddd');
         axios.post('http://localhost:5000/workout/add-workout', {
             plan_name: this.state.workout_plan_name,
             workout: this.state.workoutData,
-            gymId: 'monkey-fitness'
+            gymId: lc
         })
             .then(res => {
-                if (res.data.sucsess) {
+
+                if (res.data.success) {
                     this.setState({
                         workout_plan_name: '',
                         workoutData: [],
@@ -235,7 +224,7 @@ export default class ManageWorkout extends Component {
                                 <Input className="uk-margin-left" style={{ width: '250px' }} type="text" placeholder="Enter Reps eg. 12-10-9-9" id="reps" onKeyPress={this.addWorkout} onChange={this.onChange} value={this.state.reps} />
 
 
-                                <Button className="gen-btn ml-2" onClick={this.addDiet}>Add Diet</Button>
+
                                 <Button className="gen-btn ml-2" onClick={this.uploadWorkout}>Upload Plan</Button>
 
                             </div>

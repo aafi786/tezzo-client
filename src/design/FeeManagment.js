@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Select } from 'antd';
 import { Radio, Button } from 'antd';
-import { Table, Divider, notification, Popconfirm,Modal,Input } from 'antd';
+import { Table, Divider, notification, Popconfirm, Modal, Input } from 'antd';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { PageHeader } from 'antd';
@@ -23,9 +23,9 @@ export default class FeeManagment extends Component {
             memberId: null,
             loadingBtn: false,
             tableLoading: false,
-            visible:false,
-            month:1,
-            fee_amount:0
+            visible: false,
+            month: 1,
+            fee_amount: 0
         }
     }
     componentDidMount() {
@@ -142,17 +142,15 @@ export default class FeeManagment extends Component {
             })
             .catch(err => console.log(err));
     }
-    confirmPop = (e, a) => {
+    confirmPop = (e) => {
         this.setState({
             tableLoading: true
         })
         console.log(e);
         axios.post('http://localhost:5000/member/cancelfee', {
             id: this.state.memberId,
-            date: a.date,
-            month: a.month,
-            year: a.year,
-            monthID: a.id
+            fee_id: e
+
         })
             .then(res => {
                 if (res.data === 'done') {
@@ -185,67 +183,67 @@ export default class FeeManagment extends Component {
     }
     handleText = (e) => {
         this.setState({
-            [e.target.id]:e.target.value
+            [e.target.id]: e.target.value
         })
     }
     handleOk = e => {
-      
-       if(isNaN(this.state.month) ){
-           notification.warning({
-               message:`Enter a valid Number, ${this.state.month} is not a number`
-           })
-       }else{
-        if(isNaN(this.state.fee_amount)){
+
+        if (isNaN(this.state.month)) {
             notification.warning({
-                message:`Enter a valid Number, ${this.state.fee_amount} is not a number`
+                message: `Enter a valid Number, ${this.state.month} is not a number`
             })
-        }else{
-          axios.post('http://localhost:5000/member/add-fee',{
-              id:this.state.memberId,
-              for_next:this.state.month,
-              amount:this.state.fee_amount,
-              online:false
-          })
-          .then(res => {
-              console.log(res.data);
-              if(res.data.success){
-                  this.setState({
-                      visible:false
-                  })
-                  this.onSearchSelect(this.state.memberId)
-                  notification.success({
-                      message:'Fee Added Successfully !'
-                  })
-                  
-              }
-          })
-          .catch(err => console.log(err))
+        } else {
+            if (isNaN(this.state.fee_amount)) {
+                notification.warning({
+                    message: `Enter a valid Number, ${this.state.fee_amount} is not a number`
+                })
+            } else {
+                axios.post('http://localhost:5000/member/add-fee', {
+                    id: this.state.memberId,
+                    for_next: this.state.month,
+                    amount: this.state.fee_amount,
+                    online: false
+                })
+                    .then(res => {
+                        console.log(res.data);
+                        if (res.data.success) {
+                            this.setState({
+                                visible: false
+                            })
+                            this.onSearchSelect(this.state.memberId)
+                            notification.success({
+                                message: 'Fee Added Successfully !'
+                            })
+
+                        }
+                    })
+                    .catch(err => console.log(err))
+            }
+
         }
-          
-       }
-      };
-    
-      handleCancel = e => {
+    };
+
+    handleCancel = e => {
         console.log(e);
         this.setState({
-          visible: false,
+            visible: false,
         });
-      };
+    };
     render() {
         return (
             <div>
                 <Modal
-          title="Add Fee"
-          visible={this.state.visible}
-          onOk={this.handleOk}
-          onCancel={this.handleCancel}
-        >
-         <Input addonBefore="For next" addonAfter="Months" value={this.state.month} id="month" onChange={this.handleText} placeholder="No. of months" />
-         <br/>
-         <br/>
-         <Input addonBefore="₹" addonAfter="/-" value={this.state.fee_amount} id="fee_amount" onChange={this.handleText} placeholder="Fee Amount" />
-        
-        </Modal>
+                    title="Add Fee"
+                    visible={this.state.visible}
+                    onOk={this.handleOk}
+                    onCancel={this.handleCancel}
+                >
+                    <Input addonBefore="For next" addonAfter="Months" value={this.state.month} id="month" onChange={this.handleText} placeholder="No. of months" />
+                    <br />
+                    <br />
+                    <Input addonBefore="₹" addonAfter="/-" value={this.state.fee_amount} id="fee_amount" onChange={this.handleText} placeholder="Fee Amount" />
+
+                </Modal>
                 <h1 className="page-head">Fee Managment</h1>
                 <div uk-grid="true">
 
@@ -305,8 +303,8 @@ export default class FeeManagment extends Component {
                                         subTitle={`${this.state.feeDetails.email} - ${this.state.feeDetails.mobile_no}`}
                                     >
                                         <Button className="gen-btn ml-2" onClick={this.findMember}>Send Reminder</Button>
-                                        <Button className="gen-btn ml-2" onClick={()=> {this.setState({visible:true})}} 
-                                        style={{ background: '#fff', border: '2px solid #38CB84', color: '#29435d',fontWeight: '600' }} >
+                                        <Button className="gen-btn ml-2" onClick={() => { this.setState({ visible: true }) }}
+                                            style={{ background: '#fff', border: '1px solid #38CB84', color: '#29435d', fontWeight: '600' }} >
                                             Add Fee
                                             </Button>
 
@@ -317,12 +315,12 @@ export default class FeeManagment extends Component {
                             <Table dataSource={this.state.feeArr} loading={this.state.tableLoading} >
 
                                 <Column title="Paid On" dataIndex="paid_on" key="paid_on" />
-                                <Column title="Paid For" dataIndex="paid_for" key="paid_for" 
-                                render={(paid_for) => (
-                                <span>{`next ${paid_for} month`}</span>
-                                )}
+                                <Column title="Paid For" dataIndex="paid_for" key="paid_for"
+                                    render={(paid_for) => (
+                                        <span>{`next ${paid_for} month`}</span>
+                                    )}
                                 />
-<Column title="Amount" dataIndex="amount" key="amount" />
+                                <Column title="Amount" dataIndex="amount" key="amount" />
                                 <Column title="Due Date" dataIndex="due_on" key="due_on" />
 
 
@@ -331,21 +329,21 @@ export default class FeeManagment extends Component {
                                 <Column
                                     title="Action"
                                     key="online"
-                                    dataIndex="online"
+
                                     render={(online) => (
                                         <span>
                                             {
 
-                                                (online) ? <div>
+                                                (online.online) ? <div>
                                                     <Button className="gen-btn ml-2" disabled={true} >Cancel Payment</Button>
 
                                                 </div>
                                                     : <div>
-                                                       
-                                                        
+
+
                                                         <Popconfirm
                                                             title="Are you sure cancel this payment ?"
-                                                            onConfirm={(e) => this.confirmPop()}
+                                                            onConfirm={(e) => this.confirmPop(online.id)}
                                                             onCancel={this.cancelPop}
                                                             okText="Yes"
                                                             cancelText="No"

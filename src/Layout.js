@@ -12,6 +12,7 @@ import NoticeManager from './design/NoticeManager';
 import { Switch, Link } from "react-router-dom";
 import tezzotext from './asset/images/tezzo-text-blue.png';
 import tezzologo from './asset/images/tezzo-orange.png'
+import testdemo from './asset/images/skull.svg'
 
 
 const { Content, Footer, Sider } = Layout;
@@ -97,6 +98,8 @@ export default class LayoutMain extends Component {
         }
     }
     render() {
+
+
         return (
             <div>
                 <Layout style={{ minHeight: '100vh', }}>
@@ -112,6 +115,7 @@ export default class LayoutMain extends Component {
                         <Menu onClick={this.getLocation} defaultSelectedKeys={['1']} mode="inline">
                             <Menu.Item key="1" >
                                 <Icon type="home" />
+
                                 <span>Home</span>
                             </Menu.Item>
 
@@ -203,7 +207,9 @@ export default class LayoutMain extends Component {
                                 </Switch>
                             </div>
                         </Content>
-                        <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
+                        <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED
+                      
+                        </Footer>
                     </Layout>
                 </Layout>
             </div>
