@@ -4,7 +4,9 @@ import axios from 'axios';
 import UpdatePass from '../components/UpdatePass';
 import DelAcc from '../components/DelAcc';
 import { storage } from "../firebase/index";
+import ApiRoutes from '../config/ApiRoutes';
 import correct from '../asset/images/correct.png'
+
 
 
 export default class Profile extends Component {
@@ -42,7 +44,7 @@ export default class Profile extends Component {
         //     message.error('You are not logged in !');
         //     return;
         // }
-        axios.post('http://localhost:5000/gprofile/get-gym-byid', {
+        axios.post(ApiRoutes.api_route + '/gprofile/get-gym-byid', {
             gymId: lc
         })
             .then(res => {
@@ -106,7 +108,7 @@ export default class Profile extends Component {
                             this.setState({
                                 imageUrl: url
                             })
-                            axios.post('http://localhost:5000/gprofile/update-img-url', {
+                            axios.post(ApiRoutes.api_route + '/gprofile/update-img-url', {
                                 gymId: lc,
                                 image_url: url
                             })
@@ -163,7 +165,7 @@ export default class Profile extends Component {
                         visible: false
                     })
                     console.log(this.state);
-                    axios.post('http://localhost:5000/gprofile/update-gym', {
+                    axios.post(ApiRoutes.api_route + '/gprofile/update-gym', {
                         gym_name: this.state.gym_name,
                         gymId: lc,
                         address: this.state.address,
@@ -214,7 +216,7 @@ export default class Profile extends Component {
                             btnloding: false
                         })
                     } else {
-                        axios.post('http://localhost:5000/auth/change-number', {
+                        axios.post(ApiRoutes.api_route + '/auth/change-number', {
                             gymid: this.state.gymInfo.gymId,
                             number: this.state.phone_no
                         })
@@ -282,7 +284,7 @@ export default class Profile extends Component {
     };
 
     generateOTP = () => {
-        axios.post('http://localhost:5000/auth/generate-otp', {
+        axios.post(ApiRoutes.api_route + '/auth/generate-otp', {
             gymId: this.state.gymInfo.gymId,
             number: this.state.gymInfo.phone_no
         })
@@ -326,7 +328,7 @@ export default class Profile extends Component {
         if (this.state.otp !== '') {
             var otp_id = localStorage.getItem('otp');
             var mobile_no = localStorage.getItem('otp-mobile-no');
-            axios.post('http://localhost:5000/auth/verify-otp', {
+            axios.post(ApiRoutes.api_route + '/auth/verify-otp', {
                 otp_id,
                 mobile_no,
                 otp: this.state.otp
@@ -388,7 +390,7 @@ export default class Profile extends Component {
                     btnloding: false
                 })
             } else {
-                axios.post('http://localhost:5000/gprofile/update-email', {
+                axios.post(ApiRoutes.api_route + '/gprofile/update-email', {
                     gymId: this.state.gymInfo.gymId,
                     email: this.state.email
                 })
@@ -422,7 +424,7 @@ export default class Profile extends Component {
         this.setState({
             btnloding: true
         })
-        axios.post('http://localhost:5000/mail/send-mail', {
+        axios.post(ApiRoutes.api_route + '/mail/send-mail', {
             gymId: this.state.gymInfo.gymId,
             email: this.state.gymInfo.email
         })
@@ -464,7 +466,7 @@ export default class Profile extends Component {
         if (this.state.vcode !== '') {
             if (this.state.email_code === this.state.vcode) {
 
-                axios.post('http://localhost:5000/gprofile/verify-email', {
+                axios.post(ApiRoutes.api_route + '/gprofile/verify-email', {
                     gymId: this.state.gymId,
                     email: this.state.gymInfo.email
                 })

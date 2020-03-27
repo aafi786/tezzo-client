@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Popconfirm, Button, Modal, Input, notification, message } from 'antd';
 import axios from 'axios';
+import ApiRoutes from '../config/ApiRoutes';
 
 export default class DelAcc extends Component {
     constructor() {
@@ -22,7 +23,7 @@ export default class DelAcc extends Component {
             btnloding: true
         })
         if (this.state.verify_pass === this.props.password) {
-            axios.post('http://localhost:5000/auth/delete-account', {
+            axios.post(ApiRoutes.api_route + '/auth/delete-account', {
                 gymId: this.props.gymId
             })
                 .then(res => {

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Table, Divider, Tag } from 'antd';
+
 const { Column } = Table;
 export default class ViewWorkout extends Component {
     constructor() {

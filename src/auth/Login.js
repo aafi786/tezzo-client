@@ -8,6 +8,7 @@ import '../asset/vendor/bootstrap/css/bootstrap.min.css';
 import '../asset/fonts/font-awesome-4.7.0/css/font-awesome.min.css'
 import '../asset/css/main.css';
 import '../asset/css/util.css';
+import ApiRoutes from '../config/ApiRoutes';
 
 
 export default class Login extends Component {
@@ -21,6 +22,7 @@ export default class Login extends Component {
 
         }
     }
+
     onChange = (e) => {
         this.setState({
             [e.target.id]: e.target.value
@@ -49,7 +51,7 @@ export default class Login extends Component {
                     email_status: ''
                 })
             }
-            axios.post('http://localhost:5000/auth/login-gym', {
+            axios.post(ApiRoutes.api_route + '/auth/login-gym', {
                 email: this.state.email,
                 password: this.state.pass
             })

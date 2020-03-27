@@ -6,7 +6,7 @@ import ManageWorkout from '../components/ManageWorkout';
 import ViewWorkout from '../components/ViewWorkout';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-
+import ApiRoutes from '../config/ApiRoutes';
 
 const { Column } = Table;
 
@@ -33,7 +33,7 @@ export default class WorkoutPlan extends Component {
             tableLoading: true
         })
 
-        axios.post('http://localhost:5000/workout/all-workout', {
+        axios.post(ApiRoutes.api_route + '/workout/all-workout', {
             gym_id: lc
         })
             .then(res => {
@@ -59,7 +59,7 @@ export default class WorkoutPlan extends Component {
             this.setState({
                 view: <Spin />
             })
-            axios.post('http://localhost:5000/workout/getdietbyid', {
+            axios.post(ApiRoutes.api_route + '/workout/getdietbyid', {
                 id: id
             })
                 .then(res => {
@@ -80,7 +80,7 @@ export default class WorkoutPlan extends Component {
         this.setState({
             tableLoading: true
         })
-        axios.post('http://localhost:5000/workout/deletedietbyid', {
+        axios.post(ApiRoutes.api_route + '/workout/deletedietbyid', {
             id: e
         })
             .then(res => {

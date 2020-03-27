@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { notification, Button, Input } from 'antd';
 import axios from 'axios';
+import ApiRoutes from '../config/ApiRoutes';
 import '../asset/vendor/bootstrap/css/bootstrap.min.css';
 import '../asset/fonts/font-awesome-4.7.0/css/font-awesome.min.css'
 import '../asset/css/main.css';
@@ -36,7 +37,7 @@ export default class VerifyOTP extends Component {
         this.setState({
             disable: true
         })
-        axios.post('http://localhost:5000/auth/change-number', {
+        axios.post(ApiRoutes.api_route + '/auth/change-number', {
             gymid: localStorage.getItem('xdGcsHneGi3r@ywThjref'),
             number: this.state.new_number
         })
@@ -70,7 +71,7 @@ export default class VerifyOTP extends Component {
         if (this.state.otp !== '') {
             var otp_id = localStorage.getItem('otp');
             var mobile_no = localStorage.getItem('otp-mobile-no');
-            axios.post('http://localhost:5000/auth/verify-otp', {
+            axios.post(ApiRoutes.api_route + '/auth/verify-otp', {
                 otp_id,
                 mobile_no,
                 otp: this.state.otp

@@ -8,6 +8,7 @@ import '../asset/vendor/bootstrap/css/bootstrap.min.css';
 import '../asset/fonts/font-awesome-4.7.0/css/font-awesome.min.css'
 import '../asset/css/main.css';
 import '../asset/css/util.css';
+import ApiRoutes from '../config/ApiRoutes';
 
 
 export default class Signup extends Component {
@@ -77,7 +78,7 @@ export default class Signup extends Component {
 
             if (this.state.pass === this.state.pass1) {
 
-                axios.post('http://localhost:5000/auth/register-gym', {
+                axios.post(ApiRoutes.api_route + '/auth/register-gym', {
                     gym_name: this.state.gym_name,
                     email: this.state.email,
                     password: this.state.pass,

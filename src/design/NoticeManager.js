@@ -4,6 +4,7 @@ import { Button, Input } from 'antd';
 import { Table, Divider, notification, Popconfirm } from 'antd';
 import { Link } from 'react-router-dom';
 import Axios from 'axios';
+import ApiRoutes from '../config/ApiRoutes';
 
 const { TextArea } = Input
 const { Column } = Table;
@@ -25,7 +26,7 @@ export default class NoticeManager extends Component {
         this.setState({
             tableLoading: true
         })
-        Axios.post('http://localhost:5000/notice/all-notice', {
+        Axios.post(ApiRoutes.api_route + '/notice/all-notice', {
             gymId: 'monkey-fitness'
         })
             .then(res => {
@@ -45,7 +46,7 @@ export default class NoticeManager extends Component {
         this.setState({
             tableLoading: true
         })
-        Axios.post('http://localhost:5000/notice/addnotice', {
+        Axios.post(ApiRoutes.api_route + '/notice/addnotice', {
             title: this.state.title,
             description: this.state.descp,
             gymId: 'monkey-fitness'
@@ -71,7 +72,7 @@ export default class NoticeManager extends Component {
         this.setState({
             tableLoading: true
         })
-        Axios.post('http://localhost:5000/notice/deletenoticebyid', {
+        Axios.post(ApiRoutes.api_route + '/notice/deletenoticebyid', {
             id: e
         })
             .then(res => {

@@ -6,6 +6,7 @@ import Mem from '../icons/membership.png';
 import { PageHeader } from 'antd';
 import axios from 'axios';
 import { DatePicker, Popconfirm } from 'antd';
+import ApiRoutes from '../config/ApiRoutes';
 
 const { Column } = Table;
 const { Option } = Select;
@@ -47,7 +48,7 @@ export default class Members extends Component {
         this.setState({
             loadingTable: true
         })
-        axios.post('http://localhost:5000/member/all-members', {
+        axios.post(ApiRoutes.api_route + '/member/all-members', {
             gymId: lc
         })
             .then(res => {
@@ -80,7 +81,7 @@ export default class Members extends Component {
         });
     };
     showDrawer = (e) => {
-        axios.post('http://localhost:5000/member/getmemberbyid', {
+        axios.post(ApiRoutes.api_route + '/member/getmemberbyid', {
             id: e
         })
             .then(res => {
@@ -144,7 +145,7 @@ export default class Members extends Component {
             loadingTable: true
         })
         const { membership_no, age, f_name, l_name, gender, height, weight, disease, dob, doj, email, address, mobile_no } = this.state;
-        axios.post('http://localhost:5000/member/addmember', {
+        axios.post(ApiRoutes.api_route + '/member/addmember', {
             membership_no,
             f_name,
             l_name,
@@ -204,7 +205,7 @@ export default class Members extends Component {
         })
 
         console.log(e);
-        axios.post('http://localhost:5000/member/deletememberbyid', {
+        axios.post(ApiRoutes.api_route + '/member/deletememberbyid', {
             id: e._id
         })
             .then(res => {
@@ -224,7 +225,7 @@ export default class Members extends Component {
 
     }
     onChangeSelect = (value) => {
-        axios.post('http://localhost:5000/member/getmemberbyid', {
+        axios.post(ApiRoutes.api_route + '/member/getmemberbyid', {
             id: value
         })
             .then(res => {
@@ -239,7 +240,7 @@ export default class Members extends Component {
 
 
     onSearchSelect = (val) => {
-        axios.post('http://localhost:5000/member/getmemberbyid', {
+        axios.post(ApiRoutes.api_route + '/member/getmemberbyid', {
             id: val
         })
             .then(res => {
@@ -259,7 +260,7 @@ export default class Members extends Component {
             loadingUpdateMember: true
         })
         const { membership_no, age, f_name, l_name, gender, height, weight, disease, dob, doj, email, address, mobile_no } = this.state;
-        axios.post('http://localhost:5000/member/update-member', {
+        axios.post(ApiRoutes.api_route + '/member/update-member', {
             id: this.state.id,
             membership_no,
             firstname: f_name,

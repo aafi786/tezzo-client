@@ -12,7 +12,7 @@ import NoticeManager from './design/NoticeManager';
 import { Switch, Link } from "react-router-dom";
 import tezzotext from './asset/images/tezzo-text-blue.png';
 import tezzologo from './asset/images/tezzo-orange.png'
-import testdemo from './asset/images/skull.svg'
+import ApiRoutes from './config/ApiRoutes';
 
 
 const { Content, Footer, Sider } = Layout;
@@ -37,7 +37,7 @@ export default class LayoutMain extends Component {
             message.error('You are not logged in !');
             return;
         }
-        axios.post('http://localhost:5000/gprofile/get-gym-byid', {
+        axios.post(ApiRoutes.api_route+'/gprofile/get-gym-byid', {
             gymId: lc
         })
             .then(res => {

@@ -8,6 +8,7 @@ import ManageDiet from '../components/ManageDiet';
 import ViewDiet from '../components/ViewDiet';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import ApiRoutes from '../config/ApiRoutes';
 
 
 const { Column } = Table;
@@ -30,7 +31,7 @@ export default class Diet extends Component {
         this.setState({
             tableLoading: true
         })
-        axios.post('http://localhost:5000/diet/all-diet', {
+        axios.post(ApiRoutes.api_route + '/diet/all-diet', {
             gym_id: 'monkey-fitness'
         })
             .then(res => {
@@ -52,7 +53,7 @@ export default class Diet extends Component {
             this.setState({
                 view: <Spin />
             })
-            axios.post('http://localhost:5000/diet/getdietbyid', {
+            axios.post(ApiRoutes.api_route + '/diet/getdietbyid', {
                 id: id
             })
                 .then(res => {
@@ -74,7 +75,7 @@ export default class Diet extends Component {
         this.setState({
             tableLoading: true
         })
-        axios.post('http://localhost:5000/diet/deletedietbyid', {
+        axios.post(ApiRoutes.api_route + '/diet/deletedietbyid', {
             id: e
         })
             .then(res => {

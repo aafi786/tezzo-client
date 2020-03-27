@@ -5,6 +5,7 @@ import { Table, Divider, notification, Popconfirm, Modal, Input } from 'antd';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { PageHeader } from 'antd';
+import ApiRoutes from '../config/ApiRoutes';
 
 const { Option } = Select;
 const { Column } = Table;
@@ -37,7 +38,7 @@ export default class FeeManagment extends Component {
         this.setState({
             tableLoading: true
         })
-        axios.post('http://localhost:5000/member/all-members', {
+        axios.post(ApiRoutes.api_route + '/member/all-members', {
             gymId: lc
         })
             .then(res => {
@@ -55,7 +56,7 @@ export default class FeeManagment extends Component {
         this.setState({
             tableLoading: true
         })
-        axios.post('http://localhost:5000/member/getmemberbyid', {
+        axios.post(ApiRoutes.api_route + '/member/getmemberbyid', {
             id: value
         })
             .then(res => {
@@ -77,7 +78,7 @@ export default class FeeManagment extends Component {
         this.setState({
             tableLoading: true
         })
-        axios.post('http://localhost:5000/member/getmemberbyid', {
+        axios.post(ApiRoutes.api_route + '/member/getmemberbyid', {
             id: value
         })
             .then(res => {
@@ -112,7 +113,7 @@ export default class FeeManagment extends Component {
         // e.setAttribute("loading", "true")
         //ant-click-animating-without-extra-node
         console.log(a);
-        axios.post('http://localhost:5000/member/payfee', {
+        axios.post(ApiRoutes.api_route + '/member/payfee', {
             id: this.state.memberId,
             date: a.date,
             month: a.month,
@@ -147,7 +148,7 @@ export default class FeeManagment extends Component {
             tableLoading: true
         })
         console.log(e);
-        axios.post('http://localhost:5000/member/cancelfee', {
+        axios.post(ApiRoutes.api_route + '/member/cancelfee', {
             id: this.state.memberId,
             fee_id: e
 
@@ -198,7 +199,7 @@ export default class FeeManagment extends Component {
                     message: `Enter a valid Number, ${this.state.fee_amount} is not a number`
                 })
             } else {
-                axios.post('http://localhost:5000/member/add-fee', {
+                axios.post(ApiRoutes.api_route + '/member/add-fee', {
                     id: this.state.memberId,
                     for_next: this.state.month,
                     amount: this.state.fee_amount,

@@ -7,6 +7,7 @@ import { TimePicker, Input, Button, notification } from 'antd';
 import { v4 as uuidv4 } from 'uuid';
 
 import axios from 'axios';
+import ApiRoutes from '../config/ApiRoutes'
 
 
 const { Column } = Table;
@@ -88,7 +89,7 @@ export default class ManageDiet extends Component {
 
     }
     uploadDiet = () => {
-        axios.post('http://localhost:5000/diet/adddiet', {
+        axios.post(ApiRoutes.api_route + '/diet/adddiet', {
             diet_name: this.state.dietName,
             diet: this.state.dietArray
         })

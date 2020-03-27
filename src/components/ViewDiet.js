@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { Table, Divider, Tag } from 'antd';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import ApiRoutes from '../config/ApiRoutes';
 
 const { Column } = Table;
 
@@ -34,7 +35,7 @@ export default class ViewDiet extends Component {
         let ansArr = this.state.dietInfo.diet.filter((data, key) => {
             return e.id !== data.id
         })
-        axios.post('http://localhost:5000/diet/update-diet', {
+        axios.post(ApiRoutes.api_route + '/diet/update-diet', {
             diet_name: this.state.dietInfo.diet_name,
             diet: ansArr,
             diet_id: e.id

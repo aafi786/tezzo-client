@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Input, Button, notification } from 'antd';
 import axios from 'axios';
+import ApiRoutes from '../config/ApiRoutes';
 
 export default class UpdatePass extends Component {
     constructor(props) {
@@ -28,7 +29,7 @@ export default class UpdatePass extends Component {
         if (this.state.new_pass !== '' && this.state.new_pass_confirm !== '' && this.state.current_pass !== '') {
             if (this.state.new_pass === this.state.new_pass_confirm) {
                 if (this.state.current_pass === this.state.current_pass_inp) {
-                    axios.post('http://localhost:5000/auth/change-password', {
+                    axios.post(ApiRoutes.api_route + '/auth/change-password', {
                         gymId: this.props.gymId,
                         password: this.state.new_pass
                     })

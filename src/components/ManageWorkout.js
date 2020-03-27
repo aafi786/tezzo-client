@@ -7,6 +7,7 @@ import { Input, Button, notification } from 'antd';
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
 import { Select, InputNumber } from 'antd';
+import ApiRoutes from '../config/ApiRoutes';
 
 const { Option } = Select;
 
@@ -70,7 +71,7 @@ export default class ManageWorkout extends Component {
     uploadWorkout = () => {
         let lc = localStorage.getItem('xdGcsHneGi3r@ywThjref');
         console.log('CLickedddd');
-        axios.post('http://localhost:5000/workout/add-workout', {
+        axios.post(ApiRoutes.api_route + '/workout/add-workout', {
             plan_name: this.state.workout_plan_name,
             workout: this.state.workoutData,
             gymId: lc
