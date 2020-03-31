@@ -76,61 +76,69 @@ export default class Profile extends Component {
             .catch(err => console.log(err))
     }
     handleChange = info => {
-        let lc = localStorage.getItem('xdGcsHneGi3r@ywThjref')
+
         console.log(info)
 
         // Get this url from response in real world.
         if (info.file.status === 'error') {
-
-            const uploadTask = storage.ref(`gym-icon/${this.state.email}-${info.file.originFileObj.name}`).put(info.file.originFileObj);
-            uploadTask.on(
-                "state_changed",
-                snapshot => {
-                    const progress = Math.round(
-                        (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-                    );
-                    this.setState({
-                        dispStat: 'block',
-                        progress
-                    });
-                },
-                error => {
-                    console.log(error);
-                },
-                () => {
-                    storage
-                        .ref("gym-icon")
-                        .child(`${this.state.email}-${info.file.originFileObj.name}`)
-                        .getDownloadURL()
-                        .then(url => {
-                            console.log('url start');
-                            console.log(url);
-                            this.setState({
-                                imageUrl: url
-                            })
-                            axios.post(ApiRoutes.api_route + '/gprofile/update-img-url', {
-                                gymId: lc,
-                                image_url: url
-                            })
-                                .then(res => {
-                                    console.log(res.data)
-                                    notification.success({
-                                        message: 'Profile pic updated successfully !'
-                                    })
-                                    this.setState({
-                                        dispStat: 'none'
-                                    })
-                                })
-                                .catch(err => console.log(err))
+            this.uploadProfilePic(info);
 
 
-                        });
-                }
-            );
-
-
+        } else if (info.file.status === 'done') {
+            this.uploadProfilePic(info);
         }
     };
+
+
+    uploadProfilePic = (info) => {
+        let lc = localStorage.getItem('xdGcsHneGi3r@ywThjref')
+        const uploadTask = storage.ref(`gym-icon/${this.state.email}-${info.file.originFileObj.name}`).put(info.file.originFileObj);
+        uploadTask.on(
+            "state_changed",
+            snapshot => {
+                const progress = Math.round(
+                    (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                );
+                this.setState({
+                    dispStat: 'block',
+                    progress
+                });
+            },
+            error => {
+                console.log(error);
+            },
+            () => {
+                storage
+                    .ref("gym-icon")
+                    .child(`${this.state.email}-${info.file.originFileObj.name}`)
+                    .getDownloadURL()
+                    .then(url => {
+                        console.log('url start');
+                        console.log(url);
+                        this.setState({
+                            imageUrl: url
+                        })
+                        axios.post(ApiRoutes.api_route + '/gprofile/update-img-url', {
+                            gymId: lc,
+                            image_url: url
+                        })
+                            .then(res => {
+                                console.log(res.data)
+                                notification.success({
+                                    message: 'Profile pic updated successfully !'
+                                })
+                                this.setState({
+                                    dispStat: 'none'
+                                })
+                            })
+                            .catch(err => console.log(err))
+
+
+                    });
+            }
+        );
+
+    }
     handleText = (e) => {
         this.setState({
             [e.target.id]: e.target.value
