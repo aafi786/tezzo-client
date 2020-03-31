@@ -23,11 +23,12 @@ export default class NoticeManager extends Component {
         this.fetchNotice();
     }
     fetchNotice = () => {
+        let lc = localStorage.getItem('xdGcsHneGi3r@ywThjref');
         this.setState({
             tableLoading: true
         })
         Axios.post(ApiRoutes.api_route + '/notice/all-notice', {
-            gymId: 'monkey-fitness'
+            gymId: lc
         })
             .then(res => {
                 this.setState({
@@ -43,13 +44,14 @@ export default class NoticeManager extends Component {
         })
     }
     addNotice = () => {
+        let lc = localStorage.getItem('xdGcsHneGi3r@ywThjref')
         this.setState({
             tableLoading: true
         })
         Axios.post(ApiRoutes.api_route + '/notice/addnotice', {
             title: this.state.title,
             description: this.state.descp,
-            gymId: 'monkey-fitness'
+            gymId: lc
         })
             .then(res => {
                 if (res.data.success) {

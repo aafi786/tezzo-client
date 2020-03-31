@@ -207,7 +207,11 @@ export default class LayoutMain extends Component {
                                 </Switch>
                             </div>
                         </Content>
-                        <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED
+                        <Footer style={{ textAlign: 'center',
+    fontSize: '15px',
+    letterSpacing: '1px',
+    color: '#29435d',
+    fontWeight: '600' }}>A PINKFRY PRODUCT 
                       
                         </Footer>
                     </Layout>
