@@ -30,6 +30,7 @@ export default class FeeManagment extends Component {
         }
     }
     componentDidMount() {
+        document.title = " Tezzo - Fee Managment"
         this.fetchAllMembers();
 
     }

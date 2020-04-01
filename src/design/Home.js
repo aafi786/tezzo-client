@@ -6,7 +6,12 @@ import dumbell from '../asset/images/fit.svg';
 import money from '../asset/images/credit-card.svg';
 
 export default class Home extends Component {
+
+    componentDidMount() {
+        document.title = "Tezzo - Dashboard"
+    }
     render() {
+
         return (
             <div>
 
@@ -48,9 +53,9 @@ export default class Home extends Component {
                             <div>
                                 <div className="w-100 rounded-lg bg-white">
                                     <div className="flex bg-white p-4 box-left">
-                                                              <div>
+                                        <div>
                                             <img src={diet} alt="member-logo" />
-                                            </div>
+                                        </div>
                                         <div className="uk-margin-left" style={{ paddingTop: '6px' }}>
                                             <h3 className="cover-head-two" style={{ fontSize: '30px', marginBottom: '0px' }}>15</h3>
                                             <span>Total Diet Plans</span>
@@ -62,13 +67,13 @@ export default class Home extends Component {
                         </div>
                     </div>
                     <div>
-                    <div>
+                        <div>
                             <div>
                                 <div className="w-100 rounded-lg bg-white">
                                     <div className="flex bg-white p-4 box-left">
-                                                              <div>
+                                        <div>
                                             <img src={dumbell} alt="member-logo" />
-                                            </div>
+                                        </div>
                                         <div className="uk-margin-left" style={{ paddingTop: '6px' }}>
                                             <h3 className="cover-head-two" style={{ fontSize: '30px', marginBottom: '0px' }}>7</h3>
                                             <span>Total Workout Plans</span>
@@ -80,13 +85,13 @@ export default class Home extends Component {
                         </div>
                     </div>
                     <div>
-                    <div>
+                        <div>
                             <div>
                                 <div className="w-100 rounded-lg bg-white">
                                     <div className="flex bg-white p-4 box-left">
-                                                              <div>
+                                        <div>
                                             <img src={money} alt="member-logo" />
-                                            </div>
+                                        </div>
                                         <div className="uk-margin-left" style={{ paddingTop: '6px' }}>
                                             <h3 className="cover-head-two" style={{ fontSize: '30px', marginBottom: '0px' }}>3</h3>
                                             <span>Due Today</span>

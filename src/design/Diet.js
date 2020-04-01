@@ -25,6 +25,7 @@ export default class Diet extends Component {
         }
     }
     componentDidMount() {
+        document.title = "Tezzo - Diet Plan Manager"
         this.fetchDiet();
     }
     fetchDiet = () => {

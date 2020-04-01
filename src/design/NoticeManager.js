@@ -20,6 +20,7 @@ export default class NoticeManager extends Component {
         }
     }
     componentDidMount() {
+        document.title = "Tezzo - Notice Manager";
         this.fetchNotice();
     }
     fetchNotice = () => {

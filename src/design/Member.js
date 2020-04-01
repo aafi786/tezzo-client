@@ -41,6 +41,7 @@ export default class Members extends Component {
     }
 
     componentDidMount() {
+        document.title = "Tezzo - Members"
         this.fetchAllMem();
     }
     fetchAllMem = () => {

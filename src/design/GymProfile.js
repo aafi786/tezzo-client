@@ -4,6 +4,9 @@ import Profile from '../components/Profile';
 const { TabPane } = Tabs;
 
 export default class GymProfile extends Component {
+    componentDidMount() {
+        document.title = "Tezzo - Gym Profile"
+    }
     render() {
         return (
             <div>

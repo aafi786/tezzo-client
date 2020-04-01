@@ -25,6 +25,7 @@ export default class WorkoutPlan extends Component {
         }
     }
     componentDidMount() {
+        document.title = "Tezzo - Workout Plan Manager"
         this.fetchWorkout();
     }
     fetchWorkout = () => {
