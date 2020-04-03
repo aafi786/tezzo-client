@@ -58,8 +58,12 @@ export default class Login extends Component {
                 .then(res => {
                     if (res.data.success) {
                         localStorage.setItem('xdGcsHneGi3r@ywThjref', res.data.msg);
-                        this.props.history.push('/dashboard');
-                        message.success('Logged In Succesfully !')
+                        message.success('Logged In Succesfully !');
+                        this.setState({
+                            loading: false
+                        })
+                        this.props.history.push('/');
+
                     } else {
                         if (res.data.msg === 'no match') {
                             notification.error({
@@ -73,11 +77,12 @@ export default class Login extends Component {
                             })
 
                         }
+                        this.setState({
+                            loading: false
+                        })
                     }
 
-                    this.setState({
-                        loading: false
-                    })
+
                 })
                 .catch(err => console.log(err))
 

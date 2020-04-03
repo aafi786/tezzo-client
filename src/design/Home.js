@@ -1,12 +1,21 @@
 import React, { Component } from 'react';
+import { Table, Divider, Popconfirm } from 'antd';
+import { Link } from 'react-router-dom';
 import ImgLogo from '../asset/images/gym.png';
 import people from '../asset/images/people.svg';
 import diet from '../asset/images/restaurant.svg';
 import dumbell from '../asset/images/fit.svg';
 import money from '../asset/images/credit-card.svg';
 
+const { Column } = Table;
 export default class Home extends Component {
 
+    constructor() {
+        super();
+        this.state = {
+            loadingTable: false
+        }
+    }
     componentDidMount() {
         document.title = "Tezzo - Dashboard"
     }
@@ -103,7 +112,59 @@ export default class Home extends Component {
                         </div>
                     </div>
                 </div>
+                <div class="uk-child-width-expand@s uk-margin-top" uk-grid="true">
+                    <div>
+                        <nav className="uk-navbar-container" uk-navbar="true" style={{ background: '#fff' }}>
+
+                            <div className="uk-navbar-left">
+
+                                <ul className="uk-navbar-nav mr-left">
+                                    <li className="uk-active"><Link to="#">
+                                        Due Today
+        </Link></li>
+
+                                </ul>
+
+                            </div>
+
+
+
+                        </nav>
+                        <Table dataSource={[]} loading={this.state.loadingTable} >
+
+                            <Column title="Membership No." dataIndex="membership_no" key="membership_no" />
+                            <Column title="Name" dataIndex="firstname" key="firstname" />
+                            <Column title="Mobile No" dataIndex="mobile_no" key="mobile_no" />
+                            <Column
+                                title="Action"
+                                key="_id"
+                                render={(_id, record) => (
+                                    <span>
+                                        <Link to="#" onClick={() => this.showDrawer(_id)}>View Profile {record.lastName}</Link>
+                                        <Divider type="vertical" />
+                                        <Popconfirm
+                                            title="Are you sure delete this member?"
+                                            onConfirm={() => this.delUser(_id)}
+                                            onCancel={this.cancel}
+                                            okText="Yes"
+                                            cancelText="No"
+                                        >
+                                            <Link to="#" >Delete</Link>
+
+                                        </Popconfirm>
+                                    </span>
+                                )}
+                            />
+                        </Table>
+                    </div>
+                    <div>
+                        <div class="uk-card uk-card-default uk-card-body">Item</div>
+                    </div>
+
+                </div>
+
             </div>
+
         )
     }
 }
