@@ -52,6 +52,7 @@ export default class LayoutMain extends Component {
             .catch(err => console.log(err))
 
         let dt = moment().format('DDMMYYYY');
+	    console.log(dt);
         let g_name = localStorage.getItem('gym_name');
         let gy = g_name.replace(/\s/g, '');
         rootref.ref().child('Attendance').child(gy).child(dt).endAt().limitToFirst(1).on('child_added', (snap) => {
