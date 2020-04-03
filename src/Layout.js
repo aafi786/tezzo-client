@@ -11,7 +11,8 @@ import WorkoutPlan from './design/WorkoutPlan';
 import NoticeManager from './design/NoticeManager';
 import { Switch, Link } from "react-router-dom";
 import tezzotext from './asset/images/tezzo-text-blue.png';
-import tezzologo from './asset/images/tezzo-orange.png'
+import tezzologo from './asset/images/tezzo-orange.png';
+import pf_logo from './asset/images/pf_logo.png'
 import ApiRoutes from './config/ApiRoutes';
 
 
@@ -211,7 +212,9 @@ export default class LayoutMain extends Component {
     fontSize: '15px',
     letterSpacing: '1px',
     color: '#29435d',
-    fontWeight: '600' }}>A PINKFRY PRODUCT 
+    fontWeight: '600' }}> 
+    <img src={pf_logo} alt="pinkfry_logo" style={{height:'13px',margin:'0 auto',marginBottom:'10px'}} />
+    A PINKFRY PRODUCT 
                       
                         </Footer>
                     </Layout>

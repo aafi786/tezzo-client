@@ -6,6 +6,10 @@ import people from '../asset/images/people.svg';
 import diet from '../asset/images/restaurant.svg';
 import dumbell from '../asset/images/fit.svg';
 import money from '../asset/images/credit-card.svg';
+import received from '../asset/images/ok-circle.svg';
+import expected from '../asset/images/activity.svg';
+import music from '../asset/images/music.svg';
+import sugg from '../asset/images/envelope.svg';
 
 const { Column } = Table;
 export default class Home extends Component {
@@ -158,7 +162,74 @@ export default class Home extends Component {
                         </Table>
                     </div>
                     <div>
-                        <div class="uk-card uk-card-default uk-card-body">Item</div>
+                        <div class="uk-child-width-1-2@s" uk-grid="true">
+                            <div>
+                                <div>
+                                    <div className="w-100 rounded-lg bg-white">
+                                        <div className="flex bg-white p-4 box-left">
+                                            <div>
+                                                <img src={received} alt="member-logo" />
+                                            </div>
+                                            <div className="uk-margin-left" style={{ paddingTop: '6px' }}>
+                                                <h3 className="cover-head-two" style={{ fontSize: '30px', marginBottom: '0px' }}>₹ 15,000</h3>
+                                                <span>Payment Received </span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div>
+                                    <div className="w-100 rounded-lg bg-white">
+                                        <div className="flex bg-white p-4 box-left">
+                                            <div>
+                                                <img src={expected} alt="member-logo" />
+                                            </div>
+                                            <div className="uk-margin-left" style={{ paddingTop: '6px' }}>
+                                                <h3 className="cover-head-two" style={{ fontSize: '30px', marginBottom: '0px' }}>₹ 80,000</h3>
+                                                <span>Expected Payment</span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div>
+                                    <div className="w-100 rounded-lg bg-white">
+                                        <div className="flex bg-white p-4 box-left">
+                                            <div>
+                                                <img src={music} alt="member-logo" />
+                                            </div>
+                                            <div className="uk-margin-left" style={{ paddingTop: '6px' }}>
+                                                <h3 className="cover-head-two" style={{ fontSize: '30px', marginBottom: '0px' }}>250</h3>
+                                                <span>Birthday Today</span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div>
+                                    <div className="w-100 rounded-lg bg-white">
+                                        <div className="flex bg-white p-4 box-left">
+                                            <div>
+                                                <img src={sugg} alt="member-logo" />
+                                            </div>
+                                            <div className="uk-margin-left" style={{ paddingTop: '6px' }}>
+                                                <h3 className="cover-head-two" style={{ fontSize: '30px', marginBottom: '0px' }}>250</h3>
+                                                <span>Suggestion Box</span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
                     </div>
 
                 </div>
