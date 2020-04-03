@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Layout, Menu, Icon, Avatar, message } from 'antd';
+import { Layout, Menu, Icon, Avatar, message, notification } from 'antd';
 import axios from 'axios';
 import Home from './design/Home';
 import Members from './design/Member';
@@ -7,6 +7,8 @@ import GymProfile from './design/GymProfile';
 import Diet from './design/Diet';
 import FeeManagment from './design/FeeManagment';
 // import PlanManager from './design/PlanManager';
+import firebase from 'firebase';
+import moment from 'moment';
 import WorkoutPlan from './design/WorkoutPlan';
 import NoticeManager from './design/NoticeManager';
 import { Switch, Link } from "react-router-dom";
@@ -15,7 +17,7 @@ import tezzologo from './asset/images/tezzo-orange.png';
 import pf_logo from './asset/images/pf_logo.png'
 import ApiRoutes from './config/ApiRoutes';
 
-
+const rootref = firebase.database();
 const { Content, Footer, Sider } = Layout;
 
 //icons
@@ -38,7 +40,7 @@ export default class LayoutMain extends Component {
             message.error('You are not logged in !');
             return;
         }
-        axios.post(ApiRoutes.api_route+'/gprofile/get-gym-byid', {
+        axios.post(ApiRoutes.api_route + '/gprofile/get-gym-byid', {
             gymId: lc
         })
             .then(res => {
@@ -48,6 +50,19 @@ export default class LayoutMain extends Component {
                 })
             })
             .catch(err => console.log(err))
+
+        let dt = moment().format('DDMMYYYY');
+        let g_name = localStorage.getItem('gym_name');
+        let gy = g_name.replace(/\s/g, '');
+        rootref.ref().child('Attendance').child(gy).child(dt).endAt().limitToFirst(1).on('child_added', (snap) => {
+            notification.success({
+                message: 'Attendance Added',
+                description: `${snap.val().membership_no} : ${snap.val().name}`
+            })
+
+            console.log(snap.val());
+        })
+
 
     }
     logout = () => {
@@ -208,14 +223,16 @@ export default class LayoutMain extends Component {
                                 </Switch>
                             </div>
                         </Content>
-                        <Footer style={{ textAlign: 'center',
-    fontSize: '15px',
-    letterSpacing: '1px',
-    color: '#29435d',
-    fontWeight: '600' }}> 
-    <img src={pf_logo} alt="pinkfry_logo" style={{height:'13px',margin:'0 auto',marginBottom:'10px'}} />
-    A PINKFRY PRODUCT 
-                      
+                        <Footer style={{
+                            textAlign: 'center',
+                            fontSize: '15px',
+                            letterSpacing: '1px',
+                            color: '#29435d',
+                            fontWeight: '600'
+                        }}>
+                            <img src={pf_logo} alt="pinkfry_logo" style={{ height: '13px', margin: '0 auto', marginBottom: '10px' }} />
+    A PINKFRY PRODUCT
+
                         </Footer>
                     </Layout>
                 </Layout>
