@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Table, Divider, Tag, Button, Modal, Input, Radio, notification, Select, Form } from 'antd';
+import { Table, Divider, Button, Modal, Input, Radio, notification, Select, Form, Alert } from 'antd';
 import { Drawer } from 'antd';
 import Mem from '../icons/membership.png';
 import { PageHeader } from 'antd';
 import axios from 'axios';
 import { DatePicker, Popconfirm } from 'antd';
 import ApiRoutes from '../config/ApiRoutes';
+import gym_boy from '../asset/images/gym_boy.png'
+import gym_girl from '../asset/images/gym_girl.png'
 
 const { Column } = Table;
 const { Option } = Select;
@@ -35,7 +37,8 @@ export default class Members extends Component {
             filterType: 'name',
             temp: [],
             id: null,
-            loadingTable: false
+            loadingTable: false,
+            memberinfo: {}
 
         }
     }
@@ -113,7 +116,8 @@ export default class Members extends Component {
                     f_name: firstname,
                     l_name: lastname,
                     mobile_no,
-                    id: _id
+                    id: _id,
+                    memberinfo: res.data.msg
                 })
                 console.log(res.data)
             })
@@ -222,6 +226,9 @@ export default class Members extends Component {
             id: e._id
         })
             .then(res => {
+                this.setState({
+                    visibleDrawer: false
+                })
                 console.log(res.data);
                 notification.success({
                     message: `Member Deleted Succesfully !`,
@@ -375,6 +382,30 @@ export default class Members extends Component {
             })
         }
     }
+    setAlert = (st) => {
+        if (st === 1) {
+            return <Alert
+                message="Active"
+                description={`Due Date : ${this.state.memberinfo.next_due}`}
+                type="success"
+                showIcon
+            />
+        } else if (st === 2) {
+            return <Alert
+                message="Active"
+                description={`Due Date : ${this.state.memberinfo.next_due}`}
+                type="warning"
+                showIcon
+            />
+
+        } else if (st === 3) {
+            return <Alert
+                message="Banned "
+                type="error"
+                showIcon
+            />
+        }
+    }
     render() {
         return (
             <div>
@@ -462,12 +493,12 @@ export default class Members extends Component {
                     </div>
                 </Modal>
                 <Drawer
-                    title="Basic Drawer"
-                    placement="bottom"
+                    title="Member Info"
+                    placement="right"
                     closable={false}
                     onClose={this.onClose}
                     visible={this.state.visibleDrawer}
-                    height={500}
+                    width={1000}
 
                 >
                     <PageHeader
@@ -475,19 +506,33 @@ export default class Members extends Component {
                         style={{
                             border: '1px solid rgb(235, 237, 240)',
                         }}
-                        subTitle="Gain Weight"
-                        tags={<Tag color="green">Paid</Tag>}
+
                         extra={[
                             <Button key="3" onClick={this.updateMember} loading={this.state.loadingUpdateMember} >Save Changes</Button>,
-                            <Button className="gen-btn-red" key="1" type="primary">
-                                Delete
-      </Button>,
+                            <Popconfirm
+                                title="Are you sure delete this member?"
+                                onConfirm={() => this.delUser(this.state.memberinfo)}
+                                onCancel={this.cancel}
+                                okText="Yes"
+                                cancelText="No"
+                            >
+                                <Button className="gen-btn-red" key="1" type="primary">
+                                    Delete
+      </Button>
+
+                            </Popconfirm>
+                            ,
 
                         ]}
-                        avatar={{ src: 'https://avatars1.githubusercontent.com/u/8186664?s=460&v=4' }}
+                        avatar={{ src: `${(this.state.gender === 'male') ? gym_boy : gym_girl}` }}
 
                     >
                         <div className="pl-20 pr-20">
+                            {
+                                this.setAlert(this.state.memberinfo.status)
+                            }
+                            <br />
+
                             <div className="flex">
                                 <div className="flex-1">
                                     <label className="label-title">Membership No.</label>
