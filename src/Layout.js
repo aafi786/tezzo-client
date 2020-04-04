@@ -52,9 +52,11 @@ export default class LayoutMain extends Component {
             .catch(err => console.log(err))
 
         let dt = moment().format('DDMMYYYY');
-	    console.log(dt);
+        console.log(dt);
+        let gy_email = localStorage.getItem('gym_email')
+        let eml = gy_email.slice(0, gy_email.indexOf("@"));
         let g_name = localStorage.getItem('gym_name');
-        let gy = g_name.replace(/\s/g, '');
+        let gy = `${g_name.replace(/\s/g, '')}${eml}`;
         rootref.ref().child('Attendance').child(gy).child(dt).endAt().limitToFirst(1).on('child_added', (snap) => {
             notification.success({
                 message: 'Attendance Added',
@@ -190,7 +192,12 @@ export default class LayoutMain extends Component {
                                 <div className="uk-navbar-right">
 
                                     <ul className="uk-navbar-nav">
+                                        <li className="uk-active">
+                                            <Link to="#">
+                                                Gym No : {this.state.gymInfo.gym_no}
+                                            </Link>
 
+                                        </li>
                                         <li>
                                             <Link to="#">
 

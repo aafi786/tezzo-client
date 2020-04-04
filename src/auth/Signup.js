@@ -22,7 +22,7 @@ export default class Signup extends Component {
             pass1: '',
             loading: false,
             mobile_no_status: '',
-            email: ''
+
         }
     }
     onChange = (e) => {

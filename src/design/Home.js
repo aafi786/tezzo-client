@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Table, Divider, Popconfirm } from 'antd';
 import { Link } from 'react-router-dom';
+import { database } from '../firebase/index';
+import moment from 'moment';
 import ImgLogo from '../asset/images/gym.png';
 import people from '../asset/images/people.svg';
 import diet from '../asset/images/restaurant.svg';
@@ -12,16 +14,42 @@ import music from '../asset/images/music.svg';
 import sugg from '../asset/images/envelope.svg';
 
 const { Column } = Table;
+const rootref = database;
 export default class Home extends Component {
 
     constructor() {
         super();
         this.state = {
-            loadingTable: false
+            loadingTable: false,
+            attendance: []
         }
     }
     componentDidMount() {
         document.title = "Tezzo - Dashboard"
+        let gy_email = localStorage.getItem('gym_email')
+        let eml = gy_email.slice(0, gy_email.indexOf("@"));
+        let dt = moment().format('DDMMYYYY');
+        console.log(dt);
+        let g_name = localStorage.getItem('gym_name');
+        let gy = `${g_name.replace(/\s/g, '')}${eml}`;
+
+        rootref.ref().child('Attendance').child(gy).child(dt).on('value', (snap) => {
+            let attArr = [];
+            for (var key in snap.val()) {
+                let obj = {};
+                obj._id = key
+                obj.name = snap.val()[key].name;
+                obj.membership_no = snap.val()[key].membership_no;
+                attArr.push(obj);
+
+                // console.log(key + " -> " + snap.val()[key].status);
+
+            }
+            this.setState({
+                attendance: attArr
+            })
+            console.log(snap.val());
+        })
     }
     render() {
 
@@ -124,6 +152,47 @@ export default class Home extends Component {
 
                                 <ul className="uk-navbar-nav mr-left">
                                     <li className="uk-active"><Link to="#">
+                                        Todays Attendance
+</Link></li>
+
+                                </ul>
+
+                            </div>
+
+
+
+                        </nav>
+                        <Table dataSource={this.state.attendance} loading={this.state.loadingTable} >
+
+                            <Column title="Membership No." dataIndex="membership_no" key="membership_no" />
+                            <Column title="Name" dataIndex="name" key="name" />
+                            {/* <Column
+                                title="Action"
+                                key="_id"
+                                render={(_id, record) => (
+                                    <span>
+                                    
+                                        <Popconfirm
+                                            title="Are you sure delete this member?"
+                                            onConfirm={() => this.delUser(_id)}
+                                            onCancel={this.cancel}
+                                            okText="Yes"
+                                            cancelText="No"
+                                        >
+                                            <Link to="#" >Delete</Link>
+
+                                        </Popconfirm>
+                                    </span>
+                                )}
+                            /> */}
+                        </Table>
+                        <br />
+                        <nav className="uk-navbar-container" uk-navbar="true" style={{ background: '#fff' }}>
+
+                            <div className="uk-navbar-left">
+
+                                <ul className="uk-navbar-nav mr-left">
+                                    <li className="uk-active"><Link to="#">
                                         Due Today
         </Link></li>
 
@@ -160,6 +229,7 @@ export default class Home extends Component {
                                 )}
                             />
                         </Table>
+
                     </div>
                     <div>
                         <div class="uk-child-width-1-2@s" uk-grid="true">

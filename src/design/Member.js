@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Table, Divider, Tag, Button, Modal, Input, Radio, notification, Select } from 'antd';
+import { Table, Divider, Tag, Button, Modal, Input, Radio, notification, Select, Form } from 'antd';
 import { Drawer } from 'antd';
 import Mem from '../icons/membership.png';
 import { PageHeader } from 'antd';
@@ -54,7 +54,7 @@ export default class Members extends Component {
         })
             .then(res => {
                 this.setState({
-                    memberData: res.data,
+                    memberData: res.data.reverse(),
                     temp: res.data,
                     loadingTable: false
                 })
@@ -78,8 +78,20 @@ export default class Members extends Component {
     };
     showModal = () => {
         this.setState({
-            visible: true
+            visible: true,
+
         });
+        if (this.state.memberData.length !== 0) {
+            let memno = parseInt(this.state.memberData[0].membership_no) + 1;
+            this.setState({
+                membership_no: memno
+            })
+        } else {
+            this.setState({
+                membership_no: 1000
+            })
+        }
+
     };
     showDrawer = (e) => {
         axios.post(ApiRoutes.api_route + '/member/getmemberbyid', {
@@ -294,7 +306,75 @@ export default class Members extends Component {
     cancel = () => {
         console.log('cancel');
     }
+    addStatusDrop = (status, id) => {
 
+        let stat = "";
+        if (status === 1) {
+            stat = "success"
+        } else if (status === 2) {
+            stat = "warning"
+        } else if (status === 3) {
+            stat = "error"
+        }
+        return <Form.Item style={{ marginBottom: '0px' }} hasFeedback validateStatus={stat}>
+            <Select
+
+                style={{ width: '100%' }}
+                defaultValue={`${status}`}
+                onChange={(e) => this.handleStatus(e, status, id)}
+            >
+
+                <Option value="1" >Active</Option>
+                <Option value="2" >Expired</Option>
+                <Option value="3" >Banned</Option>
+
+
+
+            </Select>
+        </Form.Item>
+    }
+    handleStatus(tg, value, id) {
+        axios.post(ApiRoutes.api_route + '/member/update-status', {
+            status: tg,
+            id
+        })
+            .then(res => {
+                if (res.data.success) {
+                    this.fetchAllMem()
+                } else {
+                    notification.warning({
+                        message: "Some error occured, try after sometime !"
+                    })
+                }
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+    onFilter = (st) => {
+        if (st === 1) {
+            let newArr = this.state.memberData.filter((dt) => {
+                return dt.status === 1;
+            })
+            this.setState({
+                memberData: newArr
+            })
+        } else if (st === 2) {
+            let newArr = this.state.memberData.filter((dt) => {
+                return dt.status === 2;
+            })
+            this.setState({
+                memberData: newArr
+            })
+        } else if (st === 3) {
+            let newArr = this.state.memberData.filter((dt) => {
+                return dt.status === 3;
+            })
+            this.setState({
+                memberData: newArr
+            })
+        }
+    }
     render() {
         return (
             <div>
@@ -310,7 +390,7 @@ export default class Members extends Component {
                         <div className="flex">
                             <div className="flex-1">
                                 <label className="label-title">Membership No.</label>
-                                <Input placeholder="Email" id="membership_no" onChange={this.onChangeText} value={this.state.membership_no} />
+                                <Input placeholder="Email" id="membership_no" disabled={true} onChange={this.onChangeText} value={this.state.membership_no} />
                             </div>
                             <div className="flex-1 uk-margin-left">
                                 <label className="label-title">Email</label>
@@ -530,7 +610,20 @@ export default class Members extends Component {
                                     </InputGroup>
                                 </Link>
                             </li>
-                            <li><Link to="#"> <Button className="gen-btn" onClick={this.onBlur}>Reset</Button></Link></li>
+                            <li>
+                                <Link to="#">
+
+
+                                    <Button className="gen-btn" style={{ background: '#2ecc71' }} onClick={() => this.onFilter(1)}>Active</Button>
+
+                                    <Button className="gen-btn uk-margin-left" style={{ background: '#f1c40f' }} onClick={() => this.onFilter(2)}>Expired</Button>
+
+                                    <Button className="gen-btn uk-margin-left" style={{ background: '#e74c3c' }} onClick={() => this.onFilter(3)}>Banned</Button>
+
+                                    <Button className="gen-btn  uk-margin-left" onClick={this.onBlur}>Reset</Button>
+
+                                </Link>
+                            </li>
                         </ul>
 
                     </div>
@@ -553,6 +646,20 @@ export default class Members extends Component {
                     <Column title="Name" dataIndex="firstname" key="firstname" />
                     <Column title="Mobile No" dataIndex="mobile_no" key="mobile_no" />
                     <Column title="Joining Date" dataIndex="doj" key="doj" />
+                    <Column title="Due Date" dataIndex="next_due" key="next_due" />
+                    <Column
+                        title="Status"
+                        key="status"
+
+                        render={(status) => (
+                            <span>
+                                {
+                                    this.addStatusDrop(status.status, status._id)
+                                }
+
+                            </span>
+                        )}
+                    />
                     <Column
                         title="Action"
                         key="_id"

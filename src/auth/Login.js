@@ -57,8 +57,9 @@ export default class Login extends Component {
             })
                 .then(res => {
                     if (res.data.success) {
-                        localStorage.setItem('xdGcsHneGi3r@ywThjref', res.data.msg);
-                        localStorage.setItem('gym_name', res.data.data);
+                        localStorage.setItem('xdGcsHneGi3r@ywThjref', res.data.msg[0].gymId);
+                        localStorage.setItem('gym_name', res.data.msg[0].gym_name);
+                        localStorage.setItem('gym_email', res.data.msg[0].email);
                         message.success('Logged In Succesfully !');
                         this.setState({
                             loading: false

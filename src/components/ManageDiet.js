@@ -12,7 +12,7 @@ import ApiRoutes from '../config/ApiRoutes'
 
 const { Column } = Table;
 
-var Arr = [];
+
 export default class ManageDiet extends Component {
     constructor() {
         super();

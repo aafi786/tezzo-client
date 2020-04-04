@@ -81,7 +81,7 @@ export default class VerifyOTP extends Component {
                         loading: false
                     })
                     if (res.data.success) {
-                        this.props.history.push('/dashboard');
+                        this.props.history.push('/');
                     } else {
                         notification.error({
                             message: 'Incorrect OTP'
