@@ -8,6 +8,7 @@ import ManageDiet from '../components/ManageDiet';
 import ViewDiet from '../components/ViewDiet';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import SendDiet from '../components/SendDiet';
 import ApiRoutes from '../config/ApiRoutes';
 
 
@@ -29,11 +30,12 @@ export default class Diet extends Component {
         this.fetchDiet();
     }
     fetchDiet = () => {
+        let lc = localStorage.getItem('xdGcsHneGi3r@ywThjref');
         this.setState({
             tableLoading: true
         })
         axios.post(ApiRoutes.api_route + '/diet/all-diet', {
-            gym_id: 'monkey-fitness'
+            gym_id: lc
         })
             .then(res => {
                 console.log(res.data);
@@ -69,6 +71,11 @@ export default class Diet extends Component {
                     console.log(err);
                 })
 
+        } else if (e === 3) {
+            console.log(e, id)
+            this.setState({
+                view: <SendDiet />
+            })
         }
 
     }
@@ -108,6 +115,8 @@ export default class Diet extends Component {
 
                             <h3 className="set-heading">Create Diet Plan</h3>
                             <Button className="gen-btn mt-2" onClick={() => this.handleView(1, null)}>Add Diet</Button>
+                            <Button className="gen-btn mt-2 uk-margin-left" style={{ background: '#2c3e50' }} onClick={() => this.handleView(3, null)}>Send Diet</Button>
+
                             <Table dataSource={this.state.dietArray} loading={this.state.tableLoading} >
 
                                 <Column title="Diet Name" dataIndex="diet_name" key="diet_name" />

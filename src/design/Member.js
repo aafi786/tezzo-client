@@ -157,11 +157,46 @@ export default class Members extends Component {
     }
     addMember = () => {
         let lc = localStorage.getItem('xdGcsHneGi3r@ywThjref');
+
+        const { membership_no, age, f_name, l_name, gender, height, weight, disease, dob, doj, email, address, mobile_no } = this.state;
+        if (f_name.length === 0) {
+            return notification.warning({
+                message: "First Name Can't Be Empty !"
+            })
+        }
+        if (gender.length === 0) {
+            return notification.warning({
+                message: "Gender Can't Be Empty !"
+            })
+        }
+        if (mobile_no.length === 0) {
+            return notification.warning({
+                message: "Mobile Number Can't Be Empty !"
+            })
+        }
+
+        if (mobile_no.length !== 10) {
+            return notification.warning({
+                message: 'Invalid Mobile Number, Please Check'
+            })
+        }
+        if (dob.length === 0) {
+            return notification.warning({
+                message: "Date Of Birth Can't Be Empty !"
+            })
+        }
+        if (doj.length === 0) {
+            return notification.warning({
+                message: "Date Of Joining Can't Be Empty !"
+            })
+        }
+
+
+
         this.setState({
             loadingAddMember: true,
             loadingTable: true
         })
-        const { membership_no, age, f_name, l_name, gender, height, weight, disease, dob, doj, email, address, mobile_no } = this.state;
         axios.post(ApiRoutes.api_route + '/member/addmember', {
             membership_no,
             f_name,
@@ -180,6 +215,7 @@ export default class Members extends Component {
 
         })
             .then(res => {
+
                 if (res.data.sucsess) {
                     this.setState({
                         visible: false,
@@ -209,11 +245,29 @@ export default class Members extends Component {
                     })
 
 
+                } else {
+                    if (res.data.msg === 'Mobile No Already Exists') {
+                        notification.warning({
+                            message: "Member with this mobile number already exists !"
+                        })
+                    } else if (res.data.msg === 'Email Already Exists') {
+                        notification.warning({
+                            message: "Member with this Email already exists !"
+                        })
+                    }
+                    this.setState({
+                        loadingAddMember: false,
+                        loadingTable: false
+                    })
                 }
                 console.log(res.data);
             })
             .catch(err => {
                 console.log(err);
+                this.setState({
+                    loadingAddMember: false,
+                    loadingTable: false
+                })
             })
     }
     delUser = (e) => {
@@ -424,13 +478,13 @@ export default class Members extends Component {
                                 <Input placeholder="Email" id="membership_no" disabled={true} onChange={this.onChangeText} value={this.state.membership_no} />
                             </div>
                             <div className="flex-1 uk-margin-left">
-                                <label className="label-title">Email</label>
+                                <label className="label-title">Email  </label>
                                 <Input placeholder="First Name" id="email" onChange={this.onChangeText} value={this.state.email} />
                             </div>
                         </div>
                         <div className="flex mt-4">
                             <div className="flex-1">
-                                <label className="label-title">First Name</label>
+                                <label className="label-title">First Name <span style={{ color: 'red' }}>*</span></label>
                                 <Input placeholder="First Name" id="f_name" onChange={this.onChangeText} value={this.state.f_name} />
                             </div>
                             <div className="flex-1 uk-margin-left">
@@ -438,7 +492,7 @@ export default class Members extends Component {
                                 <Input placeholder="Last Name" id="l_name" onChange={this.onChangeText} value={this.state.l_name} />
                             </div>
                             <div className="flex-1 uk-margin-left">
-                                <label className="label-title">Gender</label>
+                                <label className="label-title">Gender <span style={{ color: 'red' }}>*</span></label>
                                 <Radio.Group onChange={this.onChangeGender} defaultValue="">
                                     <Radio.Button value="male">Male</Radio.Button>
                                     <Radio.Button value="female">Female</Radio.Button>
@@ -453,7 +507,7 @@ export default class Members extends Component {
                                 <Input placeholder="Address" id="address" onChange={this.onChangeText} value={this.state.address} />
                             </div>
                             <div className="flex-2 uk-margin-left">
-                                <label className="label-title">Mobile No</label>
+                                <label className="label-title">Mobile No <span style={{ color: 'red' }}>*</span></label>
                                 <Input placeholder="Mobile No" id="mobile_no" onChange={this.onChangeText} value={this.state.mobile_no} />
                             </div>
 
@@ -476,13 +530,13 @@ export default class Members extends Component {
                         </div>
                         <div className="flex mt-4">
                             <div className="flex-1">
-                                <label className="label-title">Date of Birth</label>
+                                <label className="label-title">Date of Birth <span style={{ color: 'red' }}>*</span></label>
                                 <br />
 
                                 <DatePicker format="DD-MM-YYYY" onChange={this.onChangeDOB} />
                             </div>
                             <div className="flex-1 uk-margin-left">
-                                <label className="label-title">Date of Joining</label>
+                                <label className="label-title">Date of Joining <span style={{ color: 'red' }}>*</span></label>
                                 <br />
                                 <DatePicker format="DD-MM-YYYY" onChange={this.onChangeDOJ} />
                             </div>

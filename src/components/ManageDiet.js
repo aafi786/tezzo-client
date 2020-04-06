@@ -89,9 +89,12 @@ export default class ManageDiet extends Component {
 
     }
     uploadDiet = () => {
+        let lc = localStorage.getItem('xdGcsHneGi3r@ywThjref');
         axios.post(ApiRoutes.api_route + '/diet/adddiet', {
             diet_name: this.state.dietName,
-            diet: this.state.dietArray
+            diet: this.state.dietArray,
+            gymId: lc
+
         })
             .then(res => {
                 if (res.data.sucsess) {
