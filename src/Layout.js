@@ -7,6 +7,7 @@ import GymProfile from './design/GymProfile';
 import Diet from './design/Diet';
 import FeeManagment from './design/FeeManagment';
 // import PlanManager from './design/PlanManager';
+
 import firebase from 'firebase';
 import moment from 'moment';
 import WorkoutPlan from './design/WorkoutPlan';
@@ -16,6 +17,9 @@ import tezzotext from './asset/images/tezzo-text-blue.png';
 import tezzologo from './asset/images/tezzo-orange.png';
 import pf_logo from './asset/images/pf_logo.png'
 import ApiRoutes from './config/ApiRoutes';
+import UIfx from 'uifx'
+
+import notif from './asset/sounds/notification.mp3';
 
 const rootref = firebase.database();
 const { Content, Footer, Sider } = Layout;
@@ -23,7 +27,13 @@ const { Content, Footer, Sider } = Layout;
 //icons
 
 
-
+const bell = new UIfx(
+    notif,
+    {
+        volume: 1.0, // number between 0.0 ~ 1.0
+        throttleMs: 100
+    }
+)
 export default class LayoutMain extends Component {
     state = {
         collapsed: true,
@@ -58,12 +68,14 @@ export default class LayoutMain extends Component {
         let g_name = localStorage.getItem('gym_name');
         let gy = `${g_name.replace(/\s/g, '')}${eml}`;
         rootref.ref().child('Attendance').child(gy).child(dt).endAt().limitToFirst(1).on('child_added', (snap) => {
+
             notification.success({
                 message: 'Attendance Added',
                 description: `${snap.val().membership_no} : ${snap.val().name}`
             })
-
+            bell.play();
             console.log(snap.val());
+
         })
 
 

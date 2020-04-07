@@ -303,6 +303,7 @@ export default class Members extends Component {
             id: value
         })
             .then(res => {
+                console.log(res.data.msg);
                 var tempArray = [];
                 tempArray.push(res.data.msg)
                 this.setState({
@@ -314,14 +315,15 @@ export default class Members extends Component {
 
 
     onSearchSelect = (val) => {
-        axios.post(ApiRoutes.api_route + '/member/getmemberbyid', {
-            id: val
-        })
-            .then(res => {
-                this.setState({
-                    memberData: res.data.msg
-                })
-            })
+        console.log(val);
+        // axios.post(ApiRoutes.api_route + '/member/getmemberbyid', {
+        //     id: val
+        // })
+        //     .then(res => {
+        //         this.setState({
+        //             memberData: res.data.msg
+        //         })
+        //     })
 
     }
     onBlur = () => {
@@ -688,7 +690,6 @@ export default class Members extends Component {
                                             placeholder="Select a person"
                                             optionFilterProp="children"
                                             onChange={this.onChangeSelect}
-
                                             onSearch={this.onSearchSelect}
                                             filterOption={(input, option) =>
                                                 option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
