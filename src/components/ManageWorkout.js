@@ -107,19 +107,19 @@ export default class ManageWorkout extends Component {
         if (e.key === 'Enter') {
             if (workoutArray.length === 0) {
                 let obj = {};
+                let wk_arr = [];
+                let arr_id = uuidv4();
+                obj.id = arr_id;
                 obj.workout_day = this.state.workout_day;
-                obj.body_part = this.state.body_part;
-                obj.workout_name = [
-                    this.state.workout_name
-                ]
-                obj.workout_sets = [
-
-                    this.state.sets
-                ]
-
-                obj.workout_reps = [
-                    this.state.reps
-                ]
+                obj.body_part = [this.state.body_part];
+                let wk_obj = {};
+                wk_obj.id = uuidv4();
+                wk_obj.arr_id = arr_id;
+                wk_obj.workout_name = this.state.workout_name;
+                wk_obj.workout_sets = this.state.sets;
+                wk_obj.workout_reps = this.state.reps;
+                wk_arr.push(wk_obj)
+                obj.workout = wk_arr;
                 workoutArray.push(obj);
             } else {
                 var flag = 0;
@@ -129,47 +129,134 @@ export default class ManageWorkout extends Component {
                     if (workoutArray[i].workout_day === this.state.workout_day && check) {
                         console.log('Matched True');
                         flag = 1;
-                        workoutArray[i].workout_name.push(this.state.workout_name);
-                        workoutArray[i].workout_sets.push(this.state.sets);
-                        workoutArray[i].workout_reps.push(this.state.reps);
+
+                        let wk_obj = {};
+                        wk_obj.id = uuidv4();
+                        wk_obj.arr_id = workoutArray[i].id
+                        wk_obj.workout_name = this.state.workout_name;
+                        wk_obj.workout_sets = this.state.sets;
+                        wk_obj.workout_reps = this.state.reps;
+                        workoutArray[i].workout.push(wk_obj)
 
 
                     }
                 }
                 if (flag === 0) {
+                    console.log('Unmatched !')
                     let obj = {};
+                    let wk_arr = [];
+                    let arr_id = uuidv4();
+                    obj.id = arr_id;
                     obj.workout_day = this.state.workout_day;
-                    obj.body_part = this.state.body_part;
-                    obj.workout_name = [
-                        this.state.workout_name
-                    ]
-
-                    obj.workout_sets = [
-
-                        this.state.sets
-                    ]
-
-                    obj.workout_reps = [
-                        this.state.reps
-                    ]
+                    obj.body_part = [this.state.body_part];
+                    let wk_obj = {};
+                    wk_obj.id = uuidv4();
+                    wk_obj.arr_id = arr_id;
+                    wk_obj.workout_name = this.state.workout_name;
+                    wk_obj.workout_sets = this.state.sets;
+                    wk_obj.workout_reps = this.state.reps;
+                    wk_arr.push(wk_obj)
+                    obj.workout = wk_arr;
                     workoutArray.push(obj);
                 }
-
             }
-
-
-            console.log('Workout Added');
-            this.setState({
-                workoutData: workoutArray
-            })
-            console.log(workoutArray);
         }
+        // if (e.key === 'Enter') {
+        //     if (workoutArray.length === 0) {
+        //         let obj = {};
+        //         obj.workout_day = this.state.workout_day;
+        //         obj.body_part = this.state.body_part;
+        //         obj.workout_name = [
+        //             this.state.workout_name
+        //         ]
+        //         obj.workout_sets = [
+
+        //             this.state.sets
+        //         ]
+
+        //         obj.workout_reps = [
+        //             this.state.reps
+        //         ]
+        //         workoutArray.push(obj);
+        //     } else {
+        //         var flag = 0;
+
+        //         for (var i = 0; i < workoutArray.length; i++) {
+        //             var check = workoutArray[i].body_part.toString() === this.state.body_part.toString();
+        //             if (workoutArray[i].workout_day === this.state.workout_day && check) {
+        //                 console.log('Matched True');
+        //                 flag = 1;
+        //                 workoutArray[i].workout_name.push(this.state.workout_name);
+        //                 workoutArray[i].workout_sets.push(this.state.sets);
+        //                 workoutArray[i].workout_reps.push(this.state.reps);
+
+
+        //             }
+        //         }
+        //         if (flag === 0) {
+        //             let obj = {};
+        //             obj.workout_day = this.state.workout_day;
+        //             obj.body_part = this.state.body_part;
+        //             obj.workout_name = [
+        //                 this.state.workout_name
+        //             ]
+
+        //             obj.workout_sets = [
+
+        //                 this.state.sets
+        //             ]
+
+        //             obj.workout_reps = [
+        //                 this.state.reps
+        //             ]
+        //             workoutArray.push(obj);
+        //         }
+
+        //     }
+
+
+        console.log('Workout Added');
+        this.setState({
+            workoutData: workoutArray
+        })
+        console.log(workoutArray);
+        // }
     }
     handleBodyPartChange = (value) => {
         console.log(value);
         this.setState({
             body_part: value
         })
+    }
+    handleDelWorkout = (array_id, item_id) => {
+        for (var i = 0; i < workoutArray.length; i++) {
+            if (workoutArray[i].id === array_id) {
+                console.log(workoutArray[i]);
+                let arr_m = workoutArray[i].workout;
+
+                if (arr_m.length === 1) {
+                    workoutArray = workoutArray.filter((data, index) => (
+                        data.id !== array_id
+                    ))
+                } else {
+
+                    arr_m = arr_m.filter((data, index) => (
+                        data.id !== item_id
+                    ))
+                    workoutArray[i].workout = arr_m;
+                }
+
+
+
+
+                break;
+            }
+
+        }
+        this.setState({
+            workoutData: workoutArray
+        })
+        // console.log(array_id, item_id);
     }
     render() {
         return (
@@ -237,6 +324,8 @@ export default class ManageWorkout extends Component {
                     </div>
 
 
+                    <br />
+                    <br />
                     <Table dataSource={this.state.workoutData}>
 
                         <Column title="Workout Day" dataIndex="workout_day" key="workout_day" />
@@ -255,47 +344,35 @@ export default class ManageWorkout extends Component {
                             )}
                         />
                         <Column
-                            title="Workout Name"
-                            key="workout_name"
-                            dataIndex="workout_name"
-                            render={workout_name => (
+                            title="Workouts"
+                            key="id"
+
+                            render={body_part => (
                                 <span>
-                                    {workout_name.map((tag, index) => (
-                                        <Tag key={index}>
-                                            {tag}
-                                        </Tag>
-                                    ))}
+                                    {
+                                        body_part.workout.map((data, index) => (
+                                            <div key={index}>
+                                                {<Tag style={{ background: '#64ACFB' }} key={data.workout_name}>
+                                                    {data.workout_name}
+                                                </Tag>}
+                                                {<Tag style={{ background: '#8746ED' }} key={data.workout_sets}>
+                                                    {data.workout_sets}
+                                                </Tag>}
+                                                {<Tag style={{ background: '#55CEAD' }} key={data.workout_reps}>
+                                                    {data.workout_reps}
+                                                </Tag>}
+                                                {<Link to="#" key={data.id} onClick={() => this.handleDelWorkout(data.arr_id, data.id)} >
+                                                    delete
+                                                </Link>}
+
+
+                                            </div>
+                                        ))
+                                    }
                                 </span>
                             )}
                         />
-                        <Column
-                            title="Sets"
-                            key="workout_sets"
-                            dataIndex="workout_sets"
-                            render={workout_sets => (
-                                <span>
-                                    {workout_sets.map((tag, index) => (
-                                        <Tag key={index}>
-                                            {tag}
-                                        </Tag>
-                                    ))}
-                                </span>
-                            )}
-                        />
-                        <Column
-                            title="Reps"
-                            key="workout_reps"
-                            dataIndex="workout_reps"
-                            render={workout_reps => (
-                                <span>
-                                    {workout_reps.map((tag, index) => (
-                                        <Tag key={index}>
-                                            {tag}
-                                        </Tag>
-                                    ))}
-                                </span>
-                            )}
-                        />
+
                     </Table>
                 </div>
             </div>

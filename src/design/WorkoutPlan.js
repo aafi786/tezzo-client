@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { Button } from 'antd';
 import Chef from '../icons/chef.png';
-import { Table, Divider, Spin, notification } from 'antd';
+import { Table, Divider, Spin, notification, Popconfirm } from 'antd';
 import ManageWorkout from '../components/ManageWorkout';
 import ViewWorkout from '../components/ViewWorkout';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import SendWorkout from '../components/SendWorkout';
 import ApiRoutes from '../config/ApiRoutes';
 
 const { Column } = Table;
@@ -74,6 +75,11 @@ export default class WorkoutPlan extends Component {
                 .catch(err => {
                     console.log(err);
                 })
+        } else if (e === 3) {
+            console.log(e, id)
+            this.setState({
+                view: <SendWorkout />
+            })
         }
 
     }
@@ -107,6 +113,9 @@ export default class WorkoutPlan extends Component {
                 })
             })
     }
+    cancel = () => {
+        console.log('Delete Cancel');
+    }
     render() {
         return (
             <div>
@@ -120,7 +129,9 @@ export default class WorkoutPlan extends Component {
                         <div className="uk-card uk-card-default uk-card-body">
 
                             <h3 className="set-heading">Create Workout Plan</h3>
-                            <Button className="gen-btn mt-2" onClick={() => this.handleView(1, null)}>Add Diet</Button>
+                            <Button className="gen-btn mt-2" onClick={() => this.handleView(1, null)}>Add Workout</Button>
+                            <Button className="gen-btn mt-2 uk-margin-left" style={{ background: '#2c3e50' }} onClick={() => this.handleView(3, null)}>Send Workout</Button>
+
                             <Table loading={this.state.tableLoading} dataSource={this.state.dietArray}>
 
                                 <Column title="Workout Plan" dataIndex="plan_name" key="plan_name" />
@@ -132,7 +143,17 @@ export default class WorkoutPlan extends Component {
                                         <span>
                                             <Link to="#" onClick={() => this.handleView(2, action._id)}>View</Link>
                                             <Divider type="vertical" />
-                                            <Link to="#" onClick={() => this.deleteWorkout(action._id)}>Delete</Link>
+                                            <Popconfirm
+                                                title="Are you sure delete this Diet?"
+                                                onConfirm={() => this.deleteWorkout(action._id)}
+                                                onCancel={this.cancel}
+                                                okText="Yes"
+                                                cancelText="No"
+                                            >
+
+                                                <Link to="#" >Delete</Link>
+                                            </Popconfirm>
+
                                         </span>
                                     )}
                                 />

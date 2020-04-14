@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Table, Divider, Tag } from 'antd';
+import { Table, Tag } from 'antd';
+import { Link } from 'react-router-dom';
 
 const { Column } = Table;
 export default class ViewWorkout extends Component {
@@ -38,47 +39,36 @@ export default class ViewWorkout extends Component {
                             )}
                         />
                         <Column
-                            title="Workout Name"
-                            key="workout_name"
-                            dataIndex="workout_name"
-                            render={workout_name => (
+                            title="Workouts"
+                            key="id"
+
+                            render={body_part => (
                                 <span>
-                                    {workout_name.map((tag, index) => (
-                                        <Tag key={index}>
-                                            {tag}
-                                        </Tag>
-                                    ))}
+                                    {
+                                        body_part.workout.map((data, index) => (
+                                            <div key={index}>
+                                                {<Tag style={{ background: '#64ACFB' }} key={data.workout_name}>
+                                                    {data.workout_name}
+                                                </Tag>}
+                                                {<Tag style={{ background: '#8746ED' }} key={data.workout_sets}>
+                                                    {data.workout_sets}
+                                                </Tag>}
+                                                {<Tag style={{ background: '#55CEAD' }} key={data.workout_reps}>
+                                                    {data.workout_reps}
+                                                </Tag>}
+
+                                                {<Link to="#" key={data.id} onClick={() => this.handleDelWorkout(data.arr_id, data.id)} >
+                                                    delete
+                        </Link>}
+
+
+                                            </div>
+                                        ))
+                                    }
                                 </span>
                             )}
                         />
-                        <Column
-                            title="Sets"
-                            key="workout_sets"
-                            dataIndex="workout_sets"
-                            render={workout_sets => (
-                                <span>
-                                    {workout_sets.map((tag, index) => (
-                                        <Tag key={index}>
-                                            {tag}
-                                        </Tag>
-                                    ))}
-                                </span>
-                            )}
-                        />
-                        <Column
-                            title="Reps"
-                            key="workout_reps"
-                            dataIndex="workout_reps"
-                            render={workout_reps => (
-                                <span>
-                                    {workout_reps.map((tag, index) => (
-                                        <Tag key={index}>
-                                            {tag}
-                                        </Tag>
-                                    ))}
-                                </span>
-                            )}
-                        />
+
                     </Table>
                 </div>
 
