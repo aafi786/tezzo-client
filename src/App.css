@@ -194,6 +194,7 @@ margin-left: 10px;
     font-weight: 800;
     letter-spacing: 1px;
     color:#29435d;
+    text-align: left;
 }
 .ant-tabs .ant-tabs-left-bar .ant-tabs-ink-bar{
     right: 1px;
@@ -305,6 +306,9 @@ color:rgba(255, 185, 51, 1);
 .workout-del{
     font-family: 'Quicksand', sans-serif !important;
     color: #e74c3c;
+}
+.ant-menu-inline-collapsed > .ant-menu-item, .ant-menu-inline-collapsed > .ant-menu-item-group > .ant-menu-item-group-list > .ant-menu-item, .ant-menu-inline-collapsed > .ant-menu-item-group > .ant-menu-item-group-list > .ant-menu-submenu > .ant-menu-submenu-title, .ant-menu-inline-collapsed > .ant-menu-submenu > .ant-menu-submenu-title{
+    padding: 0 22px !important;
 }
 /* .ant-btn {
     display: -webkit-box;

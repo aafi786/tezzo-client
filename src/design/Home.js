@@ -12,6 +12,8 @@ import received from '../asset/images/ok-circle.svg';
 import expected from '../asset/images/activity.svg';
 import music from '../asset/images/music.svg';
 import sugg from '../asset/images/envelope.svg';
+import axios from 'axios';
+import ApiRoutes from '../config/ApiRoutes';
 
 const { Column } = Table;
 const rootref = database;
@@ -21,10 +23,25 @@ export default class Home extends Component {
         super();
         this.state = {
             loadingTable: false,
-            attendance: []
+            attendance: [],
+            gym_summary: {}
         }
     }
     componentDidMount() {
+        let lc = localStorage.getItem('xdGcsHneGi3r@ywThjref');
+
+        axios.post(ApiRoutes.api_route + '/gprofile/dashboard', {
+            gymId: lc
+        })
+            .then(res => {
+                console.log(res.data)
+                this.setState({
+                    gym_summary: res.data
+                })
+            })
+            .catch(err => {
+                console.log(err);
+            })
         document.title = "Tezzo - Dashboard"
         let gy_email = localStorage.getItem('gym_email')
         let eml = gy_email.slice(0, gy_email.indexOf("@"));
@@ -81,7 +98,7 @@ export default class Home extends Component {
                                         <img src={people} alt="member-logo" />
                                     </div>
                                     <div className="uk-margin-left" style={{ paddingTop: '6px' }}>
-                                        <h3 className="cover-head-two" style={{ fontSize: '30px', marginBottom: '0px' }}>250</h3>
+                                        <h3 className="cover-head-two" style={{ fontSize: '30px', marginBottom: '0px' }}>{this.state.gym_summary.member}</h3>
                                         <span>Total Members</span>
                                     </div>
                                 </div>
@@ -98,7 +115,7 @@ export default class Home extends Component {
                                             <img src={diet} alt="member-logo" />
                                         </div>
                                         <div className="uk-margin-left" style={{ paddingTop: '6px' }}>
-                                            <h3 className="cover-head-two" style={{ fontSize: '30px', marginBottom: '0px' }}>15</h3>
+                                            <h3 className="cover-head-two" style={{ fontSize: '30px', marginBottom: '0px' }}>{this.state.gym_summary.diet}</h3>
                                             <span>Total Diet Plans</span>
                                         </div>
                                     </div>
@@ -116,7 +133,7 @@ export default class Home extends Component {
                                             <img src={dumbell} alt="member-logo" />
                                         </div>
                                         <div className="uk-margin-left" style={{ paddingTop: '6px' }}>
-                                            <h3 className="cover-head-two" style={{ fontSize: '30px', marginBottom: '0px' }}>7</h3>
+                                            <h3 className="cover-head-two" style={{ fontSize: '30px', marginBottom: '0px' }}>{this.state.gym_summary.workout}</h3>
                                             <span>Total Workout Plans</span>
                                         </div>
                                     </div>
@@ -134,7 +151,7 @@ export default class Home extends Component {
                                             <img src={money} alt="member-logo" />
                                         </div>
                                         <div className="uk-margin-left" style={{ paddingTop: '6px' }}>
-                                            <h3 className="cover-head-two" style={{ fontSize: '30px', marginBottom: '0px' }}>3</h3>
+                                            <h3 className="cover-head-two" style={{ fontSize: '30px', marginBottom: '0px' }}>{this.state.gym_summary.due_today}</h3>
                                             <span>Due Today</span>
                                         </div>
                                     </div>

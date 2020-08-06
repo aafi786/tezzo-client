@@ -6,6 +6,7 @@ import Signup from './auth/Signup';
 import VerifyOTP from './auth/VerifyOTP';
 import Login from './auth/Login';
 import LayoutMain from './Layout';
+import Response from './Payment/Response';
 
 
 
@@ -26,6 +27,7 @@ export default class App extends Component {
               <Route exact path="/signup" component={Signup} />
               <Route exact path="/login" component={Login} />
               <Route exact path="/verify-otp" component={VerifyOTP} />
+              <Route exact path="/payment-status" component={Response} />
 
             </Switch>
           </div>

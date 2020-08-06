@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Select } from 'antd';
+import { Select, message } from 'antd';
 import { Radio, Button } from 'antd';
 import { Table, Divider, notification, Popconfirm, Modal, Input } from 'antd';
 import { Link } from 'react-router-dom';
@@ -26,7 +26,8 @@ export default class FeeManagment extends Component {
             tableLoading: false,
             visible: false,
             month: 1,
-            fee_amount: 0
+            fee_amount: 0,
+            reminder_loading: false
         }
     }
     componentDidMount() {
@@ -231,6 +232,39 @@ export default class FeeManagment extends Component {
             visible: false,
         });
     };
+    sendReminder = (id) => {
+        this.setState({
+            reminder_loading: true
+        })
+        let lc = localStorage.getItem('xdGcsHneGi3r@ywThjref')
+
+        axios.post(ApiRoutes.api_route + '/reminder/add-reminder', {
+            member_id: id,
+            gymId: lc
+        })
+            .then(res => {
+                console.log(res.data)
+                if (res.data.success) {
+                    notification.success({
+                        message: 'Reminder Sent Successfully !'
+                    })
+                } else {
+                    notification.warning({
+                        message: 'Some Error Occured, Try Again !'
+                    })
+                }
+                this.setState({
+                    reminder_loading: false
+                })
+
+            })
+            .catch(err => {
+                console.log(err);
+                this.setState({
+                    reminder_loading: false
+                })
+            })
+    }
     render() {
         return (
             <div>
@@ -304,7 +338,7 @@ export default class FeeManagment extends Component {
                                         title={`${this.state.feeDetails.firstname} ${this.state.feeDetails.lastname} (${this.state.feeDetails.doj})`}
                                         subTitle={`${this.state.feeDetails.email} - ${this.state.feeDetails.mobile_no}`}
                                     >
-                                        <Button className="gen-btn ml-2" onClick={this.findMember}>Send Reminder</Button>
+                                        <Button className="gen-btn ml-2" loading={this.state.reminder_loading} onClick={() => this.sendReminder(this.state.feeDetails._id)}>Send Reminder</Button>
                                         <Button className="gen-btn ml-2" onClick={() => { this.setState({ visible: true }) }}
                                             style={{ background: '#fff', border: '1px solid #38CB84', color: '#29435d', fontWeight: '600' }} >
                                             Add Fee

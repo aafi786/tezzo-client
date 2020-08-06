@@ -38,7 +38,10 @@ export default class LayoutMain extends Component {
     state = {
         collapsed: true,
         view: null,
-        gymInfo: {}
+        gymInfo: {},
+        days_left: 0,
+        trial_expired: false,
+        is_on_trial: false
     };
     componentDidMount() {
         this.setState({
@@ -56,8 +59,27 @@ export default class LayoutMain extends Component {
             .then(res => {
                 console.log(res.data)
                 this.setState({
-                    gymInfo: res.data.msg
+                    gymInfo: res.data.msg,
                 })
+
+                if (res.data.msg.is_on_trial) {
+
+                    let da1 = moment(res.data.msg.trial_end_date);
+                    let da2 = moment(res.data.msg.trial_start_date);
+                    let da3 = moment().format('LL');
+
+                    let trial_Def = da1.diff(da3, 'days')
+                    let flg;
+
+                    (trial_Def < 0) ? flg = true : flg = false
+                    this.setState({
+
+                        days_left: trial_Def,
+                        trial_expired: flg,
+                        is_on_trial: true
+
+                    })
+                }
             })
             .catch(err => console.log(err))
 
@@ -90,7 +112,9 @@ export default class LayoutMain extends Component {
         console.log(collapsed);
         this.setState({ collapsed });
     };
+
     getLocation = (data) => {
+
         console.log(data.key)
         if (data.key === '1') {
             this.setState({
@@ -144,18 +168,18 @@ export default class LayoutMain extends Component {
                                 }} alt="tezzo-logo" />
                         </div>
                         <Menu onClick={this.getLocation} defaultSelectedKeys={['1']} mode="inline">
-                            <Menu.Item key="1" >
+                            <Menu.Item key="1">
                                 <Icon type="home" />
 
                                 <span>Home</span>
                             </Menu.Item>
 
 
-                            <Menu.Item key="2">
+                            <Menu.Item key="2" disabled={this.state.trial_expired}>
                                 <Icon type="usergroup-add" />
                                 <span>Members</span>
                             </Menu.Item>
-                            <Menu.Item key="3">
+                            <Menu.Item key="3" disabled={this.state.trial_expired}>
                                 <Icon type="credit-card" />
                                 <span>Fee Managment</span>
                             </Menu.Item>
@@ -163,21 +187,23 @@ export default class LayoutMain extends Component {
                                 <Icon type="user" />
                                 <span>Gym Profile</span>
                             </Menu.Item>
-                            <Menu.Item key="5">
-                                <Icon type="monitor" />
+                            <Menu.Item key="5" disabled={this.state.trial_expired}>
+                                <Icon type="shop" />
                                 <span>Diet Plan</span>
                             </Menu.Item>
-                            <Menu.Item key="7">
-                                <Icon type="monitor" />
-                                <span>Diet Plan</span>
+                            <Menu.Item key="7" disabled={this.state.trial_expired}>
+
+                                <Icon type="profile" />
+                                <span>Notice</span>
                             </Menu.Item>
-                            <Menu.Item key="6">
-                                <Icon type="monitor" />
+                            <Menu.Item key="6" disabled={this.state.trial_expired}>
+                                <Icon type="solution" />
                                 <span>Workout Plan Manager</span>
                             </Menu.Item>
 
 
                         </Menu>
+
                     </Sider>
                     <Layout>
                         <Content>
@@ -194,6 +220,12 @@ export default class LayoutMain extends Component {
                                                         height: "35px",
 
                                                     }} alt="tezzo-logo" />
+                                            </Link>
+
+                                        </li>
+                                        <li>
+                                            <Link to="#">
+
                                             </Link>
 
                                         </li>
@@ -236,6 +268,20 @@ export default class LayoutMain extends Component {
 
                             </nav>
                             <div style={{ padding: 24, background: '#F0F4F7', minHeight: 360 }}>
+
+
+                                {(this.state.is_on_trial)
+                                    ?
+                                    (this.state.trial_expired) ? <div style={{ background: '#ff3838', padding: '20px', marginBottom: '20px' }}>
+                                        <h1 style={{ color: '#fff', fontSize: '14px', fontWeight: '600', letterSpacing: '1px' }}>Your Trial Has Been Expired</h1>
+                                        <p style={{ color: '#fff' }}>Complete Your Payment In  Profile &gt; Billing </p>
+                                    </div> :
+                                        <div style={{ background: '#3ae374', padding: '20px', marginBottom: '20px' }}>
+                                            <h1 style={{ color: '#fff', fontSize: '14px', fontWeight: '600', letterSpacing: '1px' }}>Your Trial Will Expire After {this.state.days_left} Days </h1>
+                                            <p style={{ color: '#fff' }}>To Keep Using Tezzo Complete Payment In  Profile &gt; Billing </p>
+                                        </div>
+                                    : <div></div>
+                                }
                                 <Switch onChange={this.handleChange}>
                                     {
                                         this.state.view
