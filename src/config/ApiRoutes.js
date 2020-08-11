@@ -1,3 +1,3 @@
 module.exports = {
-	api_route: 'http://localhost:5000'
+	api_route: 'https://api.tezzo.fit'
 }
