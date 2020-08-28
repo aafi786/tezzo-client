@@ -205,7 +205,9 @@ export default class FeeManagment extends Component {
                     id: this.state.memberId,
                     for_next: this.state.month,
                     amount: this.state.fee_amount,
-                    online: false
+                    online: false,
+                    next_due: this.state.feeDetails.next_due,
+                    next_due_iso: this.state.feeDetails.next_due_iso
                 })
                     .then(res => {
                         console.log(res.data);
